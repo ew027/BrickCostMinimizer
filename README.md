@@ -1,5 +1,5 @@
 # BrickCostMinimizer
-This is a .NET Console application that takes a list of items in Brickstock XML format, and then finds the cheapest combiation of sellers on Bricklink. The maximum number of sellers is configurable.
+This is a .NET Console application that takes a list of items in Brickstock XML format, and then finds the cheapest combination of sellers on Bricklink. The maximum number of sellers is configurable.
 
 # Getting started
 The code should build on any version of Visual Studio from 2013 onwards. Once built, the following settings should be configured in the BrickCostMinimizer.exe.config file:
@@ -9,11 +9,11 @@ The code should build on any version of Visual Studio from 2013 onwards. Once bu
 - MaxThreads: The number of worker threads that process results. Default is 3, which is suitable for a quad core system.
 - If a proxy server is required, this should be configured here.
 
-Once the application is built and any settings applied, It can be run with any XML file saved from Brickstock, using the following arguments:
+Once the application is built and any settings applied, it can be run with any XML file saved from Brickstock, using the following arguments:
 
 BrickCostMinimizer item_xml_path max_sellers
 
-Recommended values for the maximum number of sellers are 2 to 4, the exact value will depend on the number of items in the list. In general, up to 3 sellers can be run fairly quickly (1 or 2 minutes), 4 sellers can take much longer. Increasing the minimum number of items from the list that a seller much have before they're considered can help.
+Recommended values for the maximum number of sellers are 2 to 4, the exact value will depend on the number of items in the list. In general, up to 3 sellers can be run fairly quickly (1 or 2 minutes), 4 sellers can take much longer. Increasing the minimum number of items from the list that a seller must have before they're considered can help.
 
 # Limitations
 
