@@ -71,7 +71,20 @@ namespace BrickCostMinimizer {
             int cacheStoresDays = Int32.Parse(ConfigurationManager.AppSettings["CacheStoreData"]);
             int cacheItemsDays = Int32.Parse(ConfigurationManager.AppSettings["CacheItemData"]);
 
-            BricklinkScraper scraper = new BricklinkScraper(_items, proxyAddress, proxyPort, ConfigurationManager.AppSettings["BricklinkData"], cacheStoresDays, cacheItemsDays);
+            // if the cache folder in the config file is null then create a new folder off the current folder
+            // if it's not null, check it exists and if not then attempt to create it.
+            string cacheFolder = ConfigurationManager.AppSettings["BricklinkData"];
+
+            if (string.IsNullOrEmpty(cacheFolder)) {
+                string currentAppFolder = AppDomain.CurrentDomain.BaseDirectory;
+                cacheFolder = Path.Combine(currentAppFolder, "cache");
+            }
+
+            if (!Directory.Exists(cacheFolder)) {
+                Directory.CreateDirectory(cacheFolder);
+            }
+
+            BricklinkScraper scraper = new BricklinkScraper(_items, proxyAddress, proxyPort, cacheFolder, cacheStoresDays, cacheItemsDays);
             
             // replace the wanted list with one with availability data
             _items = scraper.ScrapePriceGuideData();
@@ -170,7 +183,22 @@ namespace BrickCostMinimizer {
             int maxResults = Int32.Parse(ConfigurationManager.AppSettings["MaxResults"]);
             int maxThreads = Int32.Parse(ConfigurationManager.AppSettings["MaxThreads"]);
 
+            // if the results folder in the config file is null then create a new folder off the current folder
+            // if it's not null, check it exists and if not then attempt to create it.
             string outputRootDir = ConfigurationManager.AppSettings["ResultsFolder"];
+
+            if (string.IsNullOrEmpty(outputRootDir)) {
+                string currentAppFolder = AppDomain.CurrentDomain.BaseDirectory;
+                outputRootDir = Path.Combine(currentAppFolder, "results");
+            }
+
+            if (!Directory.Exists(outputRootDir)) {
+                Directory.CreateDirectory(outputRootDir);
+            }
+
+            if (!outputRootDir.EndsWith("\\")) {
+                outputRootDir += "\\";
+            }
 
             string resultOutputDir = "";
 
@@ -196,8 +224,9 @@ namespace BrickCostMinimizer {
 
             resultOutputDir = outputRootDir + subfolderName + "\\";
 
-            File.Copy(outputRootDir + "index.html", resultOutputDir + "index.html");
-            File.Copy(outputRootDir + "blank.html", resultOutputDir + "blank.html");
+            // these are now created by the export method directly
+            //File.Copy(outputRootDir + "index.html", resultOutputDir + "index.html");
+            //File.Copy(outputRootDir + "blank.html", resultOutputDir + "blank.html");
 
             SellerSearch search = new SellerSearch(_sellers, maxResults, _maxSellers, _items, _imageUrls, resultOutputDir, maxThreads);
 

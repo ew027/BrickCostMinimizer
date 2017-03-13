@@ -31,6 +31,10 @@ namespace BrickCostMinimizer {
             this._wantedItems = wantedItems;
             this._filepath = filepath;
 
+            if (!_filepath.EndsWith("\\")) {
+                _filepath += "\\";
+            }
+
             if (!string.IsNullOrEmpty(proxyServer)) {
                 _proxySettings = new WebProxy(proxyServer, proxyPort);
                 _useProxy = true;
@@ -291,17 +295,21 @@ namespace BrickCostMinimizer {
 
             Dictionary<string, string> storeData = new Dictionary<string, string>();
 
-            inputStream = new FileStream(_filepath + filename, FileMode.Open, FileAccess.Read);
-            reader = new StreamReader(inputStream);
+            string fullPath = Path.Combine(_filepath, filename);
 
-            while (!reader.EndOfStream) {
-                string[] partData = reader.ReadLine().Split('|');
-                
-                storeData.Add(partData[0], partData[1]);
+            if (File.Exists(fullPath)) {
+                inputStream = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
+                reader = new StreamReader(inputStream);
+
+                while (!reader.EndOfStream) {
+                    string[] partData = reader.ReadLine().Split('|');
+
+                    storeData.Add(partData[0], partData[1]);
+                }
+
+                reader.Close();
+                inputStream.Close();
             }
-
-            reader.Close();
-            inputStream.Close();
 
             return storeData;
         }

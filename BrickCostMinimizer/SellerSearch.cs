@@ -213,6 +213,8 @@ namespace BrickCostMinimizer {
         }
         
         public void Export() {
+            CreateDefaultHtml();
+
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("<html><head><style> table { border-collapse: collapse; } * {font-family: arial; font-size: 1em; } </style></head><body><h3>Results generated on " + DateTime.Now + "</h3><p><a href=\"wantedlist.html\" target=\"details\">Wanted list</a></p>");
@@ -265,6 +267,10 @@ namespace BrickCostMinimizer {
             logger.Write(sb.ToString());
 
             logger.Close();
+
+            Console.WriteLine();
+            Console.WriteLine("Results have been written to:");
+            Console.WriteLine("{0}index.html", _outputDir);
         }
 
         private void ExportWantedList() {
@@ -281,6 +287,15 @@ namespace BrickCostMinimizer {
             logger.Write("</table></body></html>");
 
             logger.Close();
+        }
+        
+        private void CreateDefaultHtml() {
+            StreamWriter blank = File.CreateText(_outputDir + "blank.html");
+            blank.Close();
+
+            StreamWriter index = File.CreateText(_outputDir + "index.html");
+            index.Write("<html><head><title>Bricklink Results</title></head><frameset cols=\"30%,*\"><frame name=\"list\" src=\"resultlist.html\"><frame name=\"details\" src=\"blank.html\"></frameset></html>");
+            index.Close();
         }
 
         // this method based on http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel
