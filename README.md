@@ -1,11 +1,11 @@
 # BrickCostMinimizer
-This is a .NET Console application that takes a list of items in Brickstock XML format, and then finds the cheapest combination of sellers on Bricklink. The maximum number of sellers is configurable.
+This is a .NET Console application that takes a list of items in [Brickstock](http://brickstock.patrickbrans.com/) XML format, and then finds the cheapest combination of sellers on [Bricklink](http://www.bricklink.com). The maximum number of sellers is configurable.
 
 # Getting started
 The code should build on any version of Visual Studio from 2013 onwards. Once built, the following settings can be configured if required  in the BrickCostMinimizer.exe.config file:
 
 - MaxThreads: The number of worker threads that process results. Default is 3, which is suitable for a quad core system.
-- If a proxy server is required, this should be configured here.
+- If a proxy server is required, this can be configured here.
 
 The program uses a cached data folder and a results folder where the HTML output is saved. By default, these are created in the application folder but it's possible to override the locations in the config file with the following settings:
 
